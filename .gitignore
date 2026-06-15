@@ -1,0 +1,30 @@
+# Build outputs / compiled binaries
+build/
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+
+# Gradle
+.gradle/
+# Machine-specific SDK location
+local.properties
+
+# Android Studio / IDE
+.idea/
+*.iml
+captures/
+.cxx/
+
+# OS cruft
+.DS_Store
+
+# Test run artifacts. Device-run write-ups carry phone-specific data (build
+# fingerprint, model, installed-app names) — track only the blank template.
+results/*.md
+!results/RESULT_TEMPLATE.md
+results/logs/
+results/audio/
+*.wav
+*.log

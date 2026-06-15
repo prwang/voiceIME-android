@@ -1,0 +1,33 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'dev.local.a11yimeprobe'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "dev.local.a11yimeprobe"
+        minSdk 33
+        targetSdk 35
+        versionCode 1
+        versionName "0.1"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+// No runtime dependencies: Android platform SDK only (per spec section 4.1).
+dependencies {
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Default probe configuration per spec section 2.3 / 6.2.
+  flagInputMethodEditor is included in XML as well as set dynamically in
+  onServiceConnected(), per the spec note that some OEM/SDK builds require the
+  XML flag for onCreateInputMethod()/onStartInput() to fire. The dynamic
+  setServiceInfo() path is kept regardless.
+-->
+<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:accessibilityEventTypes="typeViewFocused|typeViewTextSelectionChanged|typeWindowStateChanged"
+    android:accessibilityFeedbackType="feedbackGeneric"
+    android:accessibilityFlags="flagDefault|flagReportViewIds|flagInputMethodEditor"
+    android:canRetrieveWindowContent="false"
+    android:canPerformGestures="false"
+    android:description="@string/a11y_service_description"
+    android:notificationTimeout="50" />

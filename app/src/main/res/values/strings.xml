@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">A11yImeProbe</string>
+    <string name="a11y_service_description">Risk-validation probe for keyboard-bypass dictation. Commits fixed test text into the focused editor through the Android accessibility input-method-editor API. User-controlled; does not inspect screen content or perform gestures.</string>
+</resources>
