@@ -1,0 +1,33 @@
+plugins { id 'com.android.application' version '8.7.2' }
+android {
+    namespace 'dev.local.a11yimeprobe'
+    compileSdk 35
+    defaultConfig {
+        applicationId 'dev.local.a11yimeprobe.preview'
+        minSdk 33
+        targetSdk 35
+        versionCode 1
+        versionName '1'
+    }
+    testOptions {
+        unitTests.includeAndroidResources = true
+        unitTests.all {
+            systemProperty 'robolectric.dependency.repo.url', 'https://repo.maven.apache.org/maven2'
+            systemProperty 'preview.output', file('../../results/keyboard-preview').absolutePath
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    sourceSets.main {
+        java.srcDirs = ['src/main/java', '../../app/src/main/java']
+        java.includes = ['**/MiniKeyboardView.java', '**/FloatingControlsView.java', '**/OverlayStyle.java', '**/KeyboardPreviewActivity.java']
+        res.srcDirs = ['../../app/src/main/res']
+    }
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.robolectric:robolectric:4.14.1'
+}

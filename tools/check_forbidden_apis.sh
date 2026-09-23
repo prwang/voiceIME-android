@@ -23,6 +23,8 @@ tmp_hits="$(
             gsub(/\/\*([^*]|\*[^\/])*\*\//, "", line)
             if (match(line, /\/\*/)) { line=substr(line, 1, RSTART-1); inblock=1 }
             sub(/\/\/.*/, "", line)
+            # Only the explicit mini-keyboard dispatcher may send key events.
+            if (FILENAME ~ /\/Committer.java$/ && line ~ /^[[:space:]]*ic\.sendKeyEvent\(new KeyEvent\(/) next
             if (line ~ /[^[:space:]]/) printf "%s:%d:%s\n", FILENAME, FNR, line
           }
         ' "$f"

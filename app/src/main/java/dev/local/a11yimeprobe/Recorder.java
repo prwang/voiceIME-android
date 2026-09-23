@@ -105,6 +105,8 @@ public final class Recorder {
     }
 
     private AudioRecord newRecord(int source, int bufSize) {
+        if (context.checkSelfPermission(Manifest.permission.RECORD_AUDIO)
+                != PackageManager.PERMISSION_GRANTED) return null;
         try {
             return new AudioRecord(source, SAMPLE_RATE, CHANNEL, ENCODING, bufSize);
         } catch (Exception e) {

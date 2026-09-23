@@ -1,0 +1,6 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application android:theme="@android:style/Theme.Material.NoActionBar" android:label="Keyboard preview">
+        <activity android:name="dev.local.a11yimeprobe.KeyboardPreviewActivity" android:exported="true"
+            android:windowSoftInputMode="adjustResize" />
+    </application>
+</manifest>

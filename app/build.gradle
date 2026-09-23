@@ -19,6 +19,10 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // Explicit local distribution mode: update the existing device install.
+            if (project.hasProperty('localReleaseSigning')) {
+                signingConfig signingConfigs.debug
+            }
         }
     }
 

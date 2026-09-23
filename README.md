@@ -13,7 +13,8 @@ accessibility service on the test device). See `../spec.md` for the full spec.
 ## Architecture constraints (hard rules)
 
 - **Only output path** is `Committer` → `AccessibilityInputConnection.commitText()`.
-  No `ACTION_SET_TEXT`/`ACTION_PASTE`, clipboard, key-event injection,
+  Explicit mini-keyboard controls also use `AccessibilityInputConnection.sendKeyEvent()`.
+  No `ACTION_SET_TEXT`/`ACTION_PASTE`, clipboard, global key-event injection,
   `InputMethodService`, `performEditorAction`, etc. `tools/check_forbidden_apis.sh`
   fails the build if any of these appear in executable code.
 - The overlay window is `TYPE_ACCESSIBILITY_OVERLAY` with
@@ -40,6 +41,18 @@ cd /work/probe
 bash tools/check_forbidden_apis.sh app/src/main/java
 bash tools/check_apk_size.sh app/build/outputs/apk/debug/app-debug.apk
 ```
+
+Optimized release for the existing local device installation:
+
+```bash
+./gradlew :app:assembleRelease :app:lintRelease -PlocalReleaseSigning
+# -> app/build/outputs/apk/release/app-release.apk
+```
+
+This enables R8 optimization/obfuscation and resource shrinking, and signs the
+non-debuggable release with the same local debug keystore as the existing app
+so installation preserves settings. The keystore stays outside the repository.
+Without `-PlocalReleaseSigning`, the release APK is unsigned.
 
 ## Install & enable
 
@@ -82,13 +95,33 @@ $ADB shell am start -n dev.local.a11yimeprobe/.MainActivity --ez use_fake_asr tr
 
 Draggable, **two-region** window so hold-to-talk and hold-to-drag never conflict:
 
-- `🎤` **talk region** — press-and-hold to record, release to transcribe & commit.
-- `⋮⋮` **drag handle** — reposition; position persists.
+- **Hold + mic** — press-and-hold to record, release to transcribe & commit.
+- **⋮⋮** — drag to reposition (position persists); long press to expand/collapse.
+- One rounded panel: the compact Hold/handle controls stay at the upper left
+  when expanded. Hide-keyboard and Close-until-next-input icons occupy the rest
+  of the header. Closing hides the whole overlay until the next `onStartInput`.
+- Expanded size is **186 × 270dp**, 75% of the previous 248 × 360dp keyboard.
+  The compact panel is 104 × 48dp. Short windows scroll the key rows.
+- The keyboard rows are:
+
+  | 1 | 2 | 3 | 4 |
+  |---|---|---|---|
+  | Space | Up | Backspace | ET |
+  | Left | Down | Right | Enter |
+  | $ | " | Ctrl+K | Ctrl+J |
+  | Home | End | PgUp | PgDn |
+  | / | - | _ | \ |
+
+  **ET** replaces F19 and sends Ctrl+backslash followed by Ctrl+N to the same
+  accessibility input connection, using the same key-event path as Ctrl+J/K.
+  This is [Neovim's terminal-mode escape](https://neovim.io/doc/user/terminal/).
+  Symbols/Space commit text; other keys send paired key events. The grid is
+  inactive while recording/transcribing. Long-press an icon for its full name.
 
 Visibility is a single predicate — the button is shown only when **all** hold:
 
 ```
-overlayEnabled  &&  device unlocked  &&  (an editor has input focus  ||  a hold is in flight)
+overlayEnabled  &&  device unlocked  &&  not dismissed  &&  (an editor has input focus  ||  a hold is in flight)
 ```
 
 Input focus comes from the accessibility input method's `onStartInput` /

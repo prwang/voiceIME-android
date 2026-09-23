@@ -26,5 +26,6 @@ results/*.md
 !results/RESULT_TEMPLATE.md
 results/logs/
 results/audio/
+results/keyboard-preview/
 *.wav
 *.log

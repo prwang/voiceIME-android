@@ -1,0 +1,9 @@
+Use case: logo-brand
+Asset type: one production sprite atlas of 16 Android mini-keyboard action icons, to be split into individual PNG assets.
+Generate a square 1024 by 1024 sheet with a STRICT uniform 4 column by 4 row grid, each cell 256 by 256 pixels. No visible grid lines or cell backgrounds. Pure solid white opaque background with solid black monochrome icons. Do NOT use transparency. Absolutely clean flat vector-style edges; no texture, noise, distressing, speckles or artifacts. Center each icon exactly within its own cell and keep its entire drawing within the central 144 by 144 pixels. Equal visual size and consistent bold 10-pixel rounded strokes. Flat, crisp, simple familiar keyboard symbols designed to remain clear at 28dp. No shadows, gradients, decorative flourishes, keycap outlines, labels, captions or watermarks.
+The exact icons in reading order:
+Row 1: Enter (bent return arrow pointing left); Space (wide shallow U-shaped spacebar symbol); Backspace (left-pointing tag outline containing an X); Close (simple X).
+Row 2: Arrow left; Arrow up; Arrow down; Arrow right.
+Row 3: Home (left arrow pointing to a vertical start bar); End (right arrow pointing to a vertical end bar); Page up (two stacked upward chevrons); Page down (two stacked downward chevrons).
+Row 4: Hide keyboard (small simplified keyboard with downward chevron underneath); Microphone; the compact exact characters "^J"; the compact exact characters "^K".
+Maintain completely separate cells and generous pure white gutters so deterministic cropping is possible. Exactly 16 icons, no more or fewer.

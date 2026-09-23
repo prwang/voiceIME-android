@@ -236,3 +236,37 @@ $ADB shell am start -n dev.local.a11yimeprobe/.MainActivity \
 # offline fake toggle
 $ADB shell am start -n dev.local.a11yimeprobe/.MainActivity --ez use_fake_asr true --ez overlay_enabled true
 ```
+
+
+## Compact overlay and mini-keyboard regression
+
+- Enable fake ASR and floating button; focus an editor. Confirm `Hold 🎤` is
+  compact and hold/release still dictates.
+- Drag `⋮⋮`: moves and persists without opening the menu. Stationary long press
+  opens the menu; release must not move it. Long press again hides the menu.
+- Type all symbols, Space and quote into a multiline editor. Check Enter,
+  selected-text Backspace, all arrows, Home/End and PgUp/PgDn. Repeat in Termux;
+  check Ctrl+J submits a command. Editor-specific key handling may differ.
+- Tap Hide keyboard: toolbar stays. Reopen, tap Close until next input: whole
+  overlay disappears and stays dismissed until a new input activation. Focus
+  another editor: compact toolbar returns with menu closed.
+- With menu open, leave the editor or lock the device: overlay disappears.
+  Check menu near each screen edge and in landscape; all rows remain reachable.
+- With no ASR API key configured, mini-keyboard still works. During recording
+  and transcription, mini-keyboard keys must not edit text.
+
+
+## Unified compact panel and ET key
+
+- Run the local native-graphics preview: `./gradlew -p tools/keyboard-preview testDebugUnitTest`.
+- Confirm collapsed Hold/mic and handle share the keyboard's rounded styling.
+  Expand: those same controls stay in the upper-left corner, with no Keys title.
+- The expanded panel is 186×270dp (75% of the prior size). Confirm the rows:
+  Space/Up/BS/ET; Left/Down/Right/Enter; $/quote/Ctrl+K/Ctrl+J;
+  Home/End/PgUp/PgDn; slash/minus/underscore/backslash.
+- In Termius, open Neovim's terminal buffer, enter terminal input mode, and tap
+  ET. Expect Neovim Normal mode. ET sends Ctrl+backslash then Ctrl+N; it does
+  not send F19 or type literal caret characters. Avoid testing Ctrl+backslash
+  at a shell prompt since shells can treat it as a quit signal.
+- Recheck Ctrl+J/K, symbols, hold dictation, drag without expansion, hide keyboard,
+  close-until-next-input, and compact return when focus changes.
